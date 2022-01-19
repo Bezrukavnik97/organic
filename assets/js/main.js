@@ -349,8 +349,9 @@ $(document).ready(function () {
     }
 
 
-    let searchResult = new Swiper('.slider-partner-init', {
-        slidesPerView: 1.5,
+    let searchResulting = new Swiper('.slider-partner-init', {
+        slidesPerView: 1,
+        centeredSlides: true,
         spaceBetween: 30,
         navigation: {
             nextEl: '.search-right.slider-partner',
@@ -358,16 +359,20 @@ $(document).ready(function () {
         },
         breakpoints: {
             480: {
-                slidesPerView: 2.5,
+                slidesPerView: 2,
+                centeredSlides: true,
             },
             768: {
-                slidesPerView: 3.5,
+                slidesPerView: 3,
+                centeredSlides: false,
             },
             992: {
-                slidesPerView: 4.5,
+                slidesPerView: 4,
+                centeredSlides: false,
             },
             1200: {
-                slidesPerView: 5.5,
+                slidesPerView: 5,
+                centeredSlides: false,
             },
         },
     });
@@ -1057,10 +1062,53 @@ if(btnSetting){
 if(window.innerWidth < 768.1){
     let menuItem = document.querySelectorAll('.header-nav-item');
 
-        menuItem.forEach((item)=>{
-            item.addEventListener('click', ()=>{
-                item.classList.toggle('active');
+   let targetItem;
+    menuItem.forEach((item)=>{
+        item.addEventListener('click', (event)=>{
+            item.classList.toggle('active');
+            targetItem = event.target;
+            document.querySelectorAll('.header-nav-item.active').forEach((items)=>{
+                if(items !== targetItem){
+                    items.classList.remove('active');
+                }
+            })
+            menuItem.forEach((item2)=>{
+                if(!item2 == event.target){
+                    console.log(item2) 
+                }
             })
         })
 
+    })
+
 }
+function headerHide() {
+    let scrollPrev = 0,
+        headerHeight = 180;
+
+    if ($(window).width() > 767) {
+        $(window).scroll(function () {
+            let scrolled = $(window).scrollTop();
+
+            if (scrolled > headerHeight && scrolled > scrollPrev) {
+                $('.header-wrap').addClass('header-active');
+
+                if ($('.certificates-table-wrap-titles').length) {
+                    $('.certificates-table-wrap-titles').addClass(
+                        'table-active'
+                    );
+                }
+            } else {
+                $('.header-wrap').removeClass('header-active');
+
+                if ($('.certificates-table-wrap-titles').length) {
+                    $('.certificates-table-wrap-titles').removeClass(
+                        'table-active'
+                    );
+                }
+            }
+            scrollPrev = scrolled;
+        });
+    }
+}
+headerHide() ;
